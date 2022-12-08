@@ -7,10 +7,10 @@
 6. npm install -g yarn
 7. yarn -v
 
------------------// ESSE PROCESSO NÃO PRECISARÁ SER FEITO-------
--> Instalando Create react App para gerar aplicações react.
-npm install -g create-react-app
------------------// ESSE PROCESSO NÃO PRECISARÁ SER FEITO-------
+-----------------// ESSE PROCESSO NÃO PRECISARÁ SER FEITO-------<br />
+-> Instalando Create react App para gerar aplicações react.<br />
+npm install -g create-react-app<br />
+-----------------// ESSE PROCESSO NÃO PRECISARÁ SER FEITO-------<br />
 
 ### CRIANDO PROJETO E EXECUTANDO
 1. -----------------// PODEMOS UTILIZAR DESTE MODO COM NPX-------

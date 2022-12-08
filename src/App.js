@@ -18,7 +18,7 @@ class App extends React.Component {
     return(
       <div>
         <label>Primeoro Número:</label>
-        <input type="text" value={this.state.numero1} 
+     ""   <input type="text" value={this.state.numero1} 
               onChange={ (e) => this.setState({numero1: e.target.value}) } />
 
         <br />

@@ -16,3 +16,8 @@ npm install -g create-react-app<br />
 1. -----------------// PODEMOS UTILIZAR DESTE MODO COM NPX-------
 2. npx create-react-app front
 3. npm start / yarn start
+
+### ADICIONANDO BOOTSWATCH (Template)
+1. yarn add bootswatch
+
+### CRIANDO COMPONENTS

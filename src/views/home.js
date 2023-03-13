@@ -3,7 +3,8 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 
 import UsuarioService from '../app/service/usuarioService';
-import LocalStorageService from '../app/service/localStorageService';
+//import LocalStorageService from '../app/service/localStorageService';
+import { AuthContext } from '../main/provedorAutenticacao';
 
 class Home extends React.Component {
 
@@ -19,8 +20,9 @@ class Home extends React.Component {
     // executa após o html ter carregado
     // https://pt-br.reactjs.org/docs/state-and-lifecycle.html
     componentDidMount() {
-        if (LocalStorageService.obterItem('_usuario_logado') !== null) {
-            const usuarioLogado = LocalStorageService.obterItem('_usuario_logado');
+        //if (LocalStorageService.obterItem('_usuario_logado') !== null) {
+            //const usuarioLogado = LocalStorageService.obterItem('_usuario_logado');
+            const usuarioLogado = this.context.usuarioAutenticado;
 
             this.usuarioService
                 .obterSaldoPorUsuario(usuarioLogado.id)
@@ -29,9 +31,9 @@ class Home extends React.Component {
                 }).catch(error => {
                     console.log(error.response);
                 });
-        } else {
-            this.props.history.push('/login');
-        }
+        // } else {
+        //     this.props.history.push('/login');
+        // }
 
         /*axios.get(`http://localhost:8080/api/usuarios/${usuarioLogado.id}/saldo`)
             .then(response => {
@@ -51,16 +53,18 @@ class Home extends React.Component {
                 <p>E essa é sua área administrativa, utilize um dos menus ou botões abaixo para navegar pelo sistema.</p>
                 <p className="lead">
                     <Link to="/cadastro-usuario">
-                        <button type='button' className='btn btn-primary btn-lg'><i className="fa fa-users"></i>Cadastrar Usuário</button>
+                        <button type='button' className='btn btn-primary btn-lg'><i className="pi pi-users"></i>Cadastrar Usuário</button>
                     </Link>
                     
                     <Link to="/cadastro-lancamento">
-                        <button type='button' className='btn btn-danger btn-lg'><i className="fa fa-users"></i>Cadastrar Lançamento</button>
+                        <button type='button' className='btn btn-danger btn-lg'><i className="pi pi-money-bill"></i>Cadastrar Lançamento</button>
                     </Link>
                 </p>
             </div>
         )
     }
 }
+
+Home.contextType = AuthContext;
 
 export default Home;

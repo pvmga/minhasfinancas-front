@@ -49,7 +49,11 @@ class ConsultaLancamentos extends React.Component {
         this.service
         .consultar(lancamentoFiltro)
         .then( resposta => {
-            this.setState({ lancamentos: resposta.data })
+            const lista = resposta.data;
+            if (lista < 1) {
+                messages.mensagemAlert('Nenhum resultado encontrado.');
+            }
+            this.setState({ lancamentos: lista })
         }).catch( error => {
             messages.mensagemErro(error.response.data);
         })
@@ -57,6 +61,8 @@ class ConsultaLancamentos extends React.Component {
 
     editar = (id) => {
         console.log('editando o lancamento', id);
+        this.props.history.push(`/cadastro-lancamento/${id}`);
+
     }
 
     deletar = ( lancamento ) => {
@@ -91,6 +97,26 @@ class ConsultaLancamentos extends React.Component {
         this.props.history.push('/cadastro-lancamento');
     }
 
+    alterarStatus = (lancamento, status) => {
+        this.service
+            .alterarStatus(lancamento.id, status)
+            .then( response => {
+                const lancamentos = this.state.lancamentos;
+                const index = lancamentos.indexOf(lancamento);
+
+                if (index !== -1) {
+                    lancamento['status'] = status;
+                    lancamentos[index] = lancamento;
+
+                    this.setState( {lancamentos} );
+                }
+
+                messages.mensagemSucesso('Status atualizado com sucesso!');
+            }).catch( error => {
+                messages.mensagemErro('Erro ao tentar atualizar o lançamento.');
+            });
+    }
+
     render() {
         const meses = this.service.obterListaMeses();
 
@@ -110,7 +136,7 @@ class ConsultaLancamentos extends React.Component {
                                        className="form-control"
                                        id="inputAno"
                                        value={this.state.ano}
-                                       onChange={ e => this.setState({ano: e.target.value })}
+                                       onChange={ e => this.setState({ ano: e.target.value })}
                                        placeholder="Digite o Ano" />
                             </FormGroup>
 
@@ -139,8 +165,18 @@ class ConsultaLancamentos extends React.Component {
                                             lista={tipos} />
                             </FormGroup>
 
-                            <button onClick={this.buscar} type="button" className="btn btn-success">Buscar</button>
-                            <button onClick={this.renderCadastroLancamento} type="button" className="btn btn-danger">Cadastrar</button>
+                            <button onClick={this.buscar} 
+                                    type="button"
+                                    className="btn btn-success">
+                                    <i className='pi pi-search'></i>
+                                    Buscar
+                            </button>
+                            <button onClick={this.renderCadastroLancamento} 
+                                    type="button" 
+                                    className="btn btn-danger">
+                                    <i className='pi pi-plus'></i>
+                                    Cadastrar
+                            </button>
 
                         </div>
                     </div>
@@ -153,7 +189,8 @@ class ConsultaLancamentos extends React.Component {
                         <div className='bs-component'>
                             <LancamentosTable lancamentos={this.state.lancamentos}
                                               deleteAction={this.confirm}
-                                              editAction={this.editar} />
+                                              editAction={this.editar} 
+                                              alterarStatus={this.alterarStatus} />
                         </div>
                     </div>
                 </div>
